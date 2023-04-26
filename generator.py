@@ -5,7 +5,6 @@ from hdwallet import BIP44HDWallet
 from openpyxl import Workbook
 from openpyxl.styles import Alignment
 
-
 workbook = Workbook()
 
 worksheet = workbook.active
