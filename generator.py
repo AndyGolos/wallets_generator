@@ -4,7 +4,8 @@ import datetime
 from openpyxl import Workbook
 from openpyxl.styles import Alignment
 
-from crypto_util import generate_phrase, derive_sui_address, derive_aptos_address
+from crypto_util import generate_phrase, derive_sui_address, derive_aptos_address, phrase_to_eth_wallet, \
+    phrase_to_apt_wallet, phrase_to_sui_wallet
 
 arg_parser = argparse.ArgumentParser(
     prog='wallet_generator.py',
@@ -24,6 +25,8 @@ worksheet.column_dimensions['C'].width = 70
 worksheet.column_dimensions['D'].width = 30
 worksheet.column_dimensions['E'].width = 80
 worksheet.column_dimensions['F'].width = 80
+worksheet.column_dimensions['G'].width = 80
+worksheet.column_dimensions['H'].width = 80
 
 worksheet.append([
     'Address EVM',
@@ -31,24 +34,30 @@ worksheet.append([
     'Address APT',
     'Password',
     'Seed Phrase',
-    'Private Key',
+    'Private Key EVM',
+    'Private Key SUI',
+    'Private Key APT',
 ])
 
 password = config.password
 
 for i in range(int(config.number)):
-    wallet, mnemonic_phrase = generate_phrase()
-    private_key = wallet.private_key()
-    sui_address = derive_sui_address(private_key)
-    apt_address = derive_aptos_address(private_key)
+    mnemonic_phrase = generate_phrase()
+
+    eth_wallet = phrase_to_eth_wallet(mnemonic_phrase)
+    sui_wallet = phrase_to_sui_wallet(mnemonic_phrase)
+    apt_wallet = phrase_to_apt_wallet(mnemonic_phrase)
+    eth_private_key = eth_wallet.private_key()
 
     worksheet.append([
-        wallet.address(),  # A
-        sui_address,  # B
-        apt_address,  # C
+        eth_wallet.address(),  # A
+        sui_wallet.address(),  # B
+        apt_wallet.address(),  # C
         password,  # D
         mnemonic_phrase,  # E
-        private_key,  # F
+        eth_wallet.private_key(),  # F
+        sui_wallet.private_key(),  # G
+        apt_wallet.private_key(),  # H
     ])
 
 alignment = Alignment(horizontal='center', vertical='center')
