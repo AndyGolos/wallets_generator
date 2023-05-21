@@ -35,14 +35,15 @@ for i in range(int(config.number)):
     eth_private_key = eth_wallet.private_key()
 
     row = [
-        eth_wallet.address(),  # A
-        sui_wallet.address(),  # B
-        apt_wallet.address(),  # C
-        password,  # D
-        mnemonic_phrase,  # E
-        eth_wallet.private_key(),  # F
-        sui_wallet.private_key(),  # G
-        apt_wallet.private_key(),  # H
+        i + 1,  # Index
+        eth_wallet.address(),
+        sui_wallet.address(),
+        apt_wallet.address(),
+        password,
+        mnemonic_phrase,
+        eth_wallet.private_key(),
+        sui_wallet.private_key(),
+        apt_wallet.private_key(),
     ]
 
     writer.add_row(row)

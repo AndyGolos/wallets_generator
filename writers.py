@@ -7,6 +7,7 @@ from openpyxl.workbook import Workbook
 
 class AbstractWriter(abc.ABC):
     HEADERS = [
+        'Index',
         'Address EVM',
         'Address SUI',
         'Address APT',
@@ -34,15 +35,10 @@ class XLSXWriter(AbstractWriter):
     def prepare_workbook(self):
         workbook = Workbook()
 
+        dimensions = [12, 50, 70, 70, 30, 80, 80, 80, 80]
         worksheet = workbook.active
-        worksheet.column_dimensions['A'].width = 50
-        worksheet.column_dimensions['B'].width = 70
-        worksheet.column_dimensions['C'].width = 70
-        worksheet.column_dimensions['D'].width = 30
-        worksheet.column_dimensions['E'].width = 80
-        worksheet.column_dimensions['F'].width = 80
-        worksheet.column_dimensions['G'].width = 80
-        worksheet.column_dimensions['H'].width = 80
+        for i, width in enumerate(dimensions):
+            worksheet.column_dimensions[chr(ord('A') + i)].width = width
 
         worksheet.append(self.HEADERS)
         return workbook, worksheet
